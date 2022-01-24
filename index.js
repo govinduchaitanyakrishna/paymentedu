@@ -35,7 +35,7 @@ if(!paymentDetails.amount || !paymentDetails.customerId || !paymentDetails.custo
     params['CUST_ID'] = paymentDetails.customerId;
     params['TXN_AMOUNT'] = paymentDetails.amount;
     // change port number
-    params["CALLBACK_URL"] = "https://edupayment.herokuapp.com/callback";
+    params["CALLBACK_URL"] = "https://localhost:4000/callback";
     params['EMAIL'] = paymentDetails.customerEmail;
     params['MOBILE_NO'] = paymentDetails.customerPhone;
 
@@ -117,7 +117,7 @@ app.post("/callback", (req, res) => {
              if(_results.STATUS == 'TXN_SUCCESS') {
                 console.log("^^^^^^^",_results)
                 res.redirect(
-                  `https://zomo-live-2021.herokuapp.com/viewOrder?status=${_results.STATUS}&ORDERID=${_results.ORDERID}&date=${_results.TXNDATE}&bank=${_results.BANKNAME}`
+                  `https://localhost:3000/viewOrder?status=${_results.STATUS}&ORDERID=${_results.ORDERID}&date=${_results.TXNDATE}&bank=${_results.BANKNAME}`
                 );
              }else {
                  res.send('payment failed')
