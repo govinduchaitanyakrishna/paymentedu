@@ -1,9 +1,9 @@
 const express = require("express");
 const https = require("https");
 const qs = require("querystring");
+const cors = require('cors');
 const checksum_lib = require("./paytm/checksum");
 const config = require("./paytm/config");
-const cors = require('cors');
 const app = express();
 app.use(cors())
 
@@ -12,9 +12,13 @@ const parseJson = express.json({ extended: false });
 
 const PORT = process.env.PORT || 4000;
 
+app.get("/", (req, res) => {
+  res.sendFile(__dirname + "/index.html");
+});
+
 app.post("/paynow", [parseUrl, parseJson], (req, res) => {
   // Route for making payment
-
+  console.log(req.body)
   var paymentDetails = {
     orderID: req.body.id,
     amount: req.body.amount,
@@ -35,7 +39,7 @@ if(!paymentDetails.amount || !paymentDetails.customerId || !paymentDetails.custo
     params['CUST_ID'] = paymentDetails.customerId;
     params['TXN_AMOUNT'] = paymentDetails.amount;
     // change port number
-    params["CALLBACK_URL"] = "https://localhost:4000/callback";
+    params['CALLBACK_URL'] = 'http://localhost:4000/callback';
     params['EMAIL'] = paymentDetails.customerEmail;
     params['MOBILE_NO'] = paymentDetails.customerPhone;
 
@@ -116,9 +120,7 @@ app.post("/callback", (req, res) => {
            var _results = JSON.parse(response);
              if(_results.STATUS == 'TXN_SUCCESS') {
                 console.log("^^^^^^^",_results)
-                res.redirect(
-                  `https://localhost:3000/viewOrder?status=${_results.STATUS}&ORDERID=${_results.ORDERID}&date=${_results.TXNDATE}&bank=${_results.BANKNAME}`
-                );
+                res.redirect(`http://localhost:3000/viewOrder?status=${_results.STATUS}&ORDERID=${_results.ORDERID}&date=${_results.TXNDATE}&bank=${_results.BANKNAME}`)
              }else {
                  res.send('payment failed')
              }
