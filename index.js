@@ -117,7 +117,7 @@ app.post("/callback", (req, res) => {
              if(_results.STATUS == 'TXN_SUCCESS') {
                 console.log("^^^^^^^",_results)
                 res.redirect(
-                  `http://zomo-live-2021.herokuapp.com/viewOrder?status=${_results.STATUS}&ORDERID=${_results.ORDERID}&date=${_results.TXNDATE}&bank=${_results.BANKNAME}`
+                  `https://zomo-live-2021.herokuapp.com/viewOrder?status=${_results.STATUS}&ORDERID=${_results.ORDERID}&date=${_results.TXNDATE}&bank=${_results.BANKNAME}`
                 );
              }else {
                  res.send('payment failed')
