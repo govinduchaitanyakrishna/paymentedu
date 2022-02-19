@@ -114,6 +114,7 @@ app.post("/callback", (req, res) => {
            console.log('S2S Response: ', response, "\n");
 
            var _results = JSON.parse(response);
+           console.log(_results)
              if(_results.STATUS == 'TXN_SUCCESS') {
                 console.log("^^^^^^^",_results)
                 res.redirect(
